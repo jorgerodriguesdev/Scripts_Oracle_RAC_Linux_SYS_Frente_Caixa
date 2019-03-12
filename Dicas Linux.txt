@@ -1,0 +1,137 @@
+-- Dicas vi
+SHIFT+G = vai para o final do arquivo
+ESC+x= Salva
+INSERT=INsere um caracter no fianal do texto
+
+-- Verificar mensagens no carregamento do sistema.
+dmesg
+
+-- Verificar versao no RedHat...
+cat /etc/redhat-release
+
+-- Informacoes de versao do kernell. Com esta versão do Kernel, dah para encontrar a versao no red-hat no GOogle.
+uname -a
+
+-- Adicionar usuarios
+
+# adduser hugo
+# passwd hugo
+
+-- Localizar arquivo por nome...
+find [path...] -name [nome_do_arquivo] 
+find . -name slackware.png 
+find / -name "*.png" -print (arquivos png do dir. atual) 
+find /home -size +5000k -print (arquivos com mais de 5Mb) 
+
+-- Startar oracle
+Tem que estar como usuario oracle no linux
+export ORACLE_SID=aurora
+sqlplus
+/ as sysdba
+startup
+
+-- Startar o listener
+lsnrctl start
+
+-- Verificar qual base esta startada
+ps aux|grep db
+ps aux|grep ora
+
+-- Copiar arquivos na rede
+
+scp -C /etc/samba/smb.conf root@huguinho:/etc/samba/
+
+scp teste.sh usuario@servidor:/caminho 
+
+scp root@192.168.0.155:/ora01/automa.gz /ora01
+
+
+-p =preserva as permissões de acesso além das datas de criação e modificação do arquivo original; 
+
+-r =Permite copiar pastas, recursivamente; 
+
+-v =Verbose, onde são mostradas todas as mensagens; 
+
+-C =Ativa a compressão dos dados; 
+
+
+-- Descompactar aquivos
+
+gzip -d arquivo.gz
+
+
+-- Instalar arquivos tar
+  tar -zxvf 
+
+
+-- Aumentar tablespace no SQLPLUS
+
+- Conectar com / as sysdba
+
+- Select que mostra as tablespaces:
+select file_name,tablespace_name from dba_data_files
+where tablespace_name ='AUTOMA_BELEM';
+
+- Comando para alterar:
+alter tablespace AUTOMA_BELEM add datafile
+'/ora01/oradata/teste/AUTOMA_BELEM03.dbf'
+size 1000M autoextend off;
+
+-- Apagar pasta no linux
+rm -rf pasta
+
+--- Montar uma particao de Rede do Windows
+
+ mount -t cifs -o username=Convidado,password=amcom //192.168.0.11/cdrom /mnt
+
+-- Configurar os Servicos que iniciam no RedHat
+ntsysv
+
+
+-- Permissao de Arquivos
+0 = Nenhuma permissão
+1 = Apenas execução
+2 = Apenas gravação
+3 = Execução e gravação
+4 = Apenas leitura
+5 = Execução e leitura
+6 = Leitura e gravação
+7 = Todos; leitura, gravação e execução 
+
+Vamos citar um exemplo abaixo: 
+
+$ chmod 751 script.cgi 
+
+Com isso esse arquivo permite: 
+
+* Para o proprietário: TUDO; leitura, gravação e execução (7).
+* Para o grupo: execução e leitura; (5)
+* Para o público: apenas execução (1) 
+Fonte: http://www.vivaolinux.com.br/dicas/verDica.php?codigo=734
+
+-- Montar DVD udf
+
+mount -t udf /dev/dvd /mnt/dvd/
+
+-- Desmontar e Ejetar DVD/CD
+eject /dev/dvd
+
+-- Adicionar PATH
+export PATH=$PATH:/opt/firebird/bin/
+
+-- Estartar o ftp da amcom
+serv r vsftpd
+
+-- parar o ftp da amcom
+serv k vsftpd
+
+-- Ver o trafego no serv de internet
+iptraf
+
+-- Rodar em bakground
+
+nohup comando &
+
+tail 
+
+jobs -- para ver o q tah rodando

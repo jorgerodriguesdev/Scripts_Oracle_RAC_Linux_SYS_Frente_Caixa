@@ -1,0 +1,11 @@
+select df.*
+              from doc_financ df, condic_pagto cp
+              where df.cp_cod = cp.cp_cod
+                and df.df_flg_tip_lanc = 'R'
+                and cp.cp_flg_tip_condic = 'Z'
+                and cp.CP_FLG_INTEG_FRENTE_CAIXA = 'S'
+                and (select count(1)
+                     from parcel_doc_financ padf
+                     where padf.em_cod = df.em_cod
+                       and padf.fi_cod = df.fi_cod
+                       and padf.df_num_seq = df.df_num_seq) = 1

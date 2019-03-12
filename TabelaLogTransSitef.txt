@@ -1,0 +1,100 @@
+-- Create table
+create table TRANS_SITEF_LOG
+(
+  EM_COD              NUMBER(2) not null,
+  FI_COD              NUMBER(2) not null,
+  TS_NUM_TERM         VARCHAR2(20) not null,
+  TS_NUM_TRANS        NUMBER(8) not null,
+  EF_NUM              NUMBER(3),
+  CF_NUM_SEQ          NUMBER(10),
+  TS_DAT_TRANS        DATE not null,
+  TS_NSU_SITEF        VARCHAR2(20) not null,
+  TS_FLG_DESCAR       VARCHAR2(1) default 'N',
+  TS_VAL_TRANS        NUMBER(12,4) default 0,
+  TS_FLG_SITUAC       VARCHAR2(1) default 'A',
+  TS_NUM_TERM_ORIGEM  VARCHAR2(20),
+  TS_NUM_TRANS_ORIGEM NUMBER(8),
+  TS_NSU_HOST         VARCHAR2(20),
+  TS_NOM_USER        VARCHAR2(60) default USER not null,
+  TS_NOM_TERM        VARCHAR2(50) not null,
+  TS_DAT_EXEC        DATE default SYSDATE not null,
+  TS_FLG_COMAND_EXEC VARCHAR2(1) default 'I' not null,
+  TS_FLG_OLD_NEW     VARCHAR2(1) default 'N' not null
+)
+tablespace GONDOLA_PD
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Grant/Revoke object privileges 
+grant select, insert, update, delete, alter on trans_sitef_LOG to ROLE_GONDOLA;
+
+
+
+create or replace trigger t_user_trans_sitef_log
+  after insert or update or delete on trans_sitef
+  for each row
+declare
+  x_flg_comand_exec      VARCHAR2(1);
+  x_nom_term             VARCHAR2(50);
+  x_data_atual           DATE := SYSDATE;
+begin
+  BEGIN
+    SELECT NVL(SUBSTR(USERENV('TERMINAL'),1,50), 'REPLICACAO')
+    INTO x_nom_term
+    FROM DUAL;
+    EXCEPTION
+      WHEN NO_DATA_FOUND THEN
+        x_nom_term := 'REPLICACAO';
+  END;
+
+  IF INSERTING THEN
+    x_flg_comand_exec := 'I';
+  ELSIF UPDATING THEN
+    x_flg_comand_exec := 'U';
+  ELSIF DELETING THEN
+    x_flg_comand_exec := 'D';
+  END IF;
+  --
+  IF INSERTING OR UPDATING THEN
+    insert into trans_sitef_log
+    ( EM_COD, FI_COD, TS_NUM_TERM, TS_NUM_TRANS, EF_NUM, CF_NUM_SEQ,
+      TS_DAT_TRANS, TS_NSU_SITEF, TS_FLG_DESCAR, TS_VAL_TRANS, TS_FLG_SITUAC,
+      TS_NUM_TERM_ORIGEM,  TS_NUM_TRANS_ORIGEM, TS_NSU_HOST, ts_nom_user, ts_nom_term,
+      ts_dat_exec, ts_flg_comand_exec, ts_flg_old_new )
+    values
+    ( :new.EM_COD, :new.FI_COD, :new.TS_NUM_TERM, :new.TS_NUM_TRANS, :new.EF_NUM, :new.CF_NUM_SEQ,
+      :new.TS_DAT_TRANS, :new.TS_NSU_SITEF, :new.TS_FLG_DESCAR, :new.TS_VAL_TRANS, :new.TS_FLG_SITUAC,
+      :new.TS_NUM_TERM_ORIGEM,  :new.TS_NUM_TRANS_ORIGEM, :new.TS_NSU_HOST,
+      SUBSTR(USER,1,60), x_nom_term, x_data_atual, x_flg_comand_exec, 'N' );
+    --
+    IF UPDATING THEN
+      insert into trans_sitef_log
+      ( EM_COD, FI_COD, TS_NUM_TERM, TS_NUM_TRANS, EF_NUM, CF_NUM_SEQ,
+      TS_DAT_TRANS, TS_NSU_SITEF, TS_FLG_DESCAR, TS_VAL_TRANS, TS_FLG_SITUAC,
+      TS_NUM_TERM_ORIGEM,  TS_NUM_TRANS_ORIGEM, TS_NSU_HOST, ts_nom_user, ts_nom_term,
+      ts_dat_exec, ts_flg_comand_exec, ts_flg_old_new )
+      values
+      ( :old.EM_COD, :old.FI_COD, :old.TS_NUM_TERM, :old.TS_NUM_TRANS, :old.EF_NUM, :old.CF_NUM_SEQ,
+      :old.TS_DAT_TRANS, :old.TS_NSU_SITEF, :old.TS_FLG_DESCAR, :old.TS_VAL_TRANS, :old.TS_FLG_SITUAC,
+      :old.TS_NUM_TERM_ORIGEM,  :old.TS_NUM_TRANS_ORIGEM, :old.TS_NSU_HOST,
+        SUBSTR(USER,1,60), x_nom_term, x_data_atual, x_flg_comand_exec, 'O' );
+    END IF;
+  ELSIF  DELETING THEN
+    insert into trans_sitef_log
+    ( EM_COD, FI_COD, TS_NUM_TERM, TS_NUM_TRANS, EF_NUM, CF_NUM_SEQ,
+      TS_DAT_TRANS, TS_NSU_SITEF, TS_FLG_DESCAR, TS_VAL_TRANS, TS_FLG_SITUAC,
+      TS_NUM_TERM_ORIGEM,  TS_NUM_TRANS_ORIGEM, TS_NSU_HOST, ts_nom_user, ts_nom_term,
+      ts_dat_exec, ts_flg_comand_exec, ts_flg_old_new )
+    values
+    ( :old.EM_COD, :old.FI_COD, :old.TS_NUM_TERM, :old.TS_NUM_TRANS, :old.EF_NUM, :old.CF_NUM_SEQ,
+      :old.TS_DAT_TRANS, :old.TS_NSU_SITEF, :old.TS_FLG_DESCAR, :old.TS_VAL_TRANS, :old.TS_FLG_SITUAC,
+      :old.TS_NUM_TERM_ORIGEM,  :old.TS_NUM_TRANS_ORIGEM, :old.TS_NSU_HOST,
+      SUBSTR(USER,1,60), x_nom_term, x_data_atual, x_flg_comand_exec, 'O' );
+  END IF;
+end;

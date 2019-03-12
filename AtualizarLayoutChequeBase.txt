@@ -1,0 +1,25 @@
+
+LF = Avanço de Linhas.
+
+Parâmetros
+
+Update banco 
+ set BC_NUM_LINHA_VAL = :numero,      // é a quantidade de LF antes do valor. 
+     BC_FLG_MEIA_LINHA_VAL = :flg,    // = "S" avança metade da linha; "N" sem avanço.
+     BC_NUM_COLUNA_VAL = :numero,     // é o número da coluna a partir de zero onde será impress o cifrão/valor.
+     BC_NUM_LINHA_EXTSO1 = :numero,   // é a quantidade de LF antes da primeira linha do extenso.
+     BC_FLG_MEIA_LINHA_EXTSO1 = :flg, // = "S" avança metade da linha; "N" sem avanço.
+     BC_NUM_COLUNA_EXTSO1 = :numero,  // é o número da coluna a partir de zero da primeira linha do extenso.
+     BC_NUM_LINHA_EXTSO2 = :numero,   // é a quantidade de LF antes da segunda linha do extenso
+     BC_FLG_MEIA_LINHA_EXTSO2 = :flg, // = "S" avança metade da linha; "N" sem avanço.
+     BC_NUM_COLUNA_EXTSO2 = :numero,  // é o número da coluna a partir de zero da segunda linha do extenso.
+     BC_NUM_LINHA_FAVCDO = :numero,   // é a quantidade de LF antes do favorecido.
+     BC_FLG_MEIA_LINHA_FAVCDO = :flg, // = "S" avança metade da linha; "N" sem avanço.
+     BC_NUM_COLUNA_FAVCDO = :numero,  // é o número da coluna a partir de zero do favorecido.
+     BC_NUM_LINHA_MUNIC = :numero,    // é a quantidade de LF antes do município/data.
+     BC_FLG_MEIA_LINHA_MUNIC = :flg,  // = "S" avança metade da linha; "N" sem avanço.
+     BC_NUM_COLUNA_MUNIC = :numero,   // é o número da coluna a partir de zero, onde imprimirá o município/data.
+     BC_NUM_COLUNA_DIA = :numero,     // é o número de colunas em branco antes de imprimir o dia.
+     BC_NUM_COLUNA_MES = :numero,     // é o número de colunas em branco antes de imprimir o mês.
+     BC_NUM_COLUNA_ANO = :numero,     // é o número de colunas em branco antes de imprimir o ano.
+where bc_cod = :bc_cod  

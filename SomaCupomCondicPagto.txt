@@ -1,0 +1,16 @@
+select cp_cod, sum(cfcp.cfcp_val_total)       
+from cupom_fiscal cf, cupom_fiscal_condic_pagto cfcp
+where cf.em_cod = cfcp.em_cod
+  and cf.fi_cod = cfcp.fi_cod
+  and cf.ef_num = cfcp.ef_num
+  and cf.cf_num_seq = cfcp.cf_num_seq
+  and cf.em_cod = 1
+  and cf.fi_cod = 2
+  and cf.ef_num = 14
+  and cf.cf_dat_venda >= '07/03/2006'
+  and cf.cf_dat_venda <  '08/03/2006'
+  and cf.cf_flg_finalc = 'S'
+  and cf.cf_flg_cancdo = 'N'
+  and cfcp.cfcp_flg_troco = 'N'
+group by cp_cod
+  

@@ -1,0 +1,15 @@
+1) Chave da NF da doc_financ diferente do que esta no cd para o que esta no ADM:
+
+select *
+from doc_financ dfcd, gondola.doc_financ@supercr dfsuper
+where dfcd.em_cod = dfsuper.em_cod
+  and dfcd.fi_cod = dfsuper.fi_cod
+  and dfcd.df_num_seq = dfsuper.df_num_seq
+  and dfcd.fi_cod = 3
+  and dfcd.nfen_num_nf is not null
+  and (dfcd.nfen_num_nf <> dfsuper.nfen_num_nf
+    or dfcd.em_cod_nf_entid = dfsuper.em_cod_nf_entid
+    or dfcd.fi_cod_nf_entid = dfsuper.fi_cod_nf_entid
+    or dfcd.en_cod_nf_entid = dfsuper.en_cod_nf_entid
+    or dfcd.ctdf_modelo_formul = dfsuper.ctdf_modelo_formul
+    or dfcd.ctdf_serie_formul = dfsuper.ctdf_serie_formul)

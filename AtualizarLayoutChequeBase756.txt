@@ -1,0 +1,21 @@
+
+Update banco 
+ set BC_NUM_LINHA_VAL = 1,   
+     BC_FLG_MEIA_LINHA_VAL = 'S', 
+     BC_NUM_COLUNA_VAL = 54,   
+     BC_NUM_LINHA_EXTSO1 = 1,
+     BC_FLG_MEIA_LINHA_EXTSO1 = 'N',
+     BC_NUM_COLUNA_EXTSO1 = 23, 
+     BC_NUM_LINHA_EXTSO2 = 0, 
+     BC_FLG_MEIA_LINHA_EXTSO2 = 'S', 
+     BC_NUM_COLUNA_EXTSO2 = 7,  
+     BC_NUM_LINHA_FAVCDO = 1,   
+     BC_FLG_MEIA_LINHA_FAVCDO = 'N', 
+     BC_NUM_COLUNA_FAVCDO = 3,  
+     BC_NUM_LINHA_MUNIC = 0,    
+     BC_FLG_MEIA_LINHA_MUNIC = 'S',  
+     BC_NUM_COLUNA_MUNIC = 21,   
+     BC_NUM_COLUNA_DIA = 1,     
+     BC_NUM_COLUNA_MES = 7,     
+     BC_NUM_COLUNA_ANO = 10,     
+where bc_cod = 756  

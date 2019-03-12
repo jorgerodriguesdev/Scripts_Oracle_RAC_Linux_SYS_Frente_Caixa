@@ -1,0 +1,47 @@
+- Abrir um Prompt do Dos.
+
+- Acessar a pasta onde está o GDB.
+cd c:\GDB
+
+- Setar o path do Bin do Firebird.
+ path=%path%;C:\Arquiv~1\Firebird\Firebi~1\bin
+
+- Fazer uma copia do gdb. OBS: trabalhar sempre com o Backup.
+copy amcom.gdb amcom1.gbd
+
+- Setar as seguintes variaveis em memoria:
+SET ISC_USER=SYSDBA 
+
+SET ISC_PASSWORD=masterkey 
+
+
+- Agora confira se o BD está corrompido. Voce precisa ter acesso exclusivo ao BD para fazer isso, mas como voce está trabalhando com uma cópia do BD original, isso não é problema. 
+
+gfix -v -full amcom1.gdb
+
+
+- Se o comando anterior indicou que há um problema com o BD, agora nós devemos repara-lo. 
+
+gfix -mend -full -ignore amcom1.gdb 
+
+
+- O próximo passo é conferir se o BD foi reparado. 
+
+gfix -v -full amcom1.gdb 
+
+
+- Se o BD continua com erros, voce deve fazer um backup completo e restaura-lo. No seu estilo mais simples, a linha de comando do backup pode ser : 
+
+gbak -backup -v -ignore amcom1.gdb amcom1.gbk 
+
+ou se esse der erro, use este:
+gbak -backup -v -ignore -garbage amcom1.gdb amcom1.gbk 
+
+
+- Agora crie um novo BD do backup: 
+
+gbak -create -v amcom1.gbk amcom_new.gdb
+
+
+Depois e so renomear o amcom_new.gdb para amcom.gdb para o Frente de Caixa poder utilizar.
+

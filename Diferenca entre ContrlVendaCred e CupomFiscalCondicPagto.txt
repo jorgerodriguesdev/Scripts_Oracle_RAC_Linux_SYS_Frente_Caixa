@@ -1,0 +1,11 @@
+select em_cod, fi_cod, ef_num, cf_num_seq, cp_cod, sum(cncr_val_docto)
+from contrl_venda_cred cncr
+having (select sum(CFCP_VAL_TOTAL)
+        from cupom_fiscal_condic_pagto cfcp
+        where cfcp.em_cod = cncr.em_cod
+          and cfcp.fi_cod = cncr.fi_cod
+          and cfcp.ef_num = cncr.ef_num
+          and cfcp.cf_num_seq = cncr.cf_num_seq
+          and cfcp.cp_cod = cncr.cp_cod
+          and cfcp.cfcp_flg_troco = 'N') <> sum(cncr.cncr_val_docto)
+group by em_cod, fi_cod, ef_num, cf_num_seq, cp_cod

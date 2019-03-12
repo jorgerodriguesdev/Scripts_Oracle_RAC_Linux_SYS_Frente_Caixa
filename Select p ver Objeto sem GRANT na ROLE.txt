@@ -1,0 +1,7 @@
+select distinct 'grant all on ' || object_name || ' to role_gondola;'
+  from user_objects
+  where object_type in ('TABLE','PACKAGE','PROCEDURE','SEQUENCE','SYNONYM','VIEW')
+    and object_name not like '%BELEM%'
+    and not exists (select 1
+                    from all_tab_privs
+                    where table_name = object_name)

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo -n "Backup Diario - Inicio: " ; date
+
+mount -t ext3 /dev/hdc1 /mnt/backup ; RC1=$?
+
+if test ${RC1} -eq 0
+then
+    cd /
+    rsync -aWx --delete . /mnt/backup
+else
+    echo "Nao foi possivel acessar o disco de backup (RC=$RC1)"
+fi
+
+umount /mnt/backup
+
+echo -n "Backup Diario - Final:  " ; date

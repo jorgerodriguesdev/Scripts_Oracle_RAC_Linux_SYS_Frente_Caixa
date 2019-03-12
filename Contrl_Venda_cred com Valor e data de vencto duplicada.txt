@@ -1,0 +1,13 @@
+select *
+from contrl_venda_cred a01
+where exists(select 1
+             from contrl_venda_cred a02
+             where a02.em_cod = a01.em_cod
+               and a02.fi_cod = a01.fi_cod
+               and a02.en_cod = a01.en_cod
+               and a02.cp_cod = a01.cp_cod
+               and a02.cncr_dat_venda = a01.cncr_dat_venda
+               and a02.cncr_dat_vencto = a01.cncr_dat_vencto
+               and a02.cncr_val_docto = a01.cncr_val_docto
+               and a02.cncr_num_parcel <> a01.cncr_num_parcel)
+--  and a01.cncr_dat_vencto >= '18/08/2006'

@@ -1,0 +1,29 @@
+Caso tenha pouca memória na máquina pode-se aumentar ou criar um arquivo de swap para o linux;
+
+*********************************************
+Bom, entao voce nao ker criar uma PARTICAO de swap, e sim um arquivo 
+para SWAP no seu disco local certo??
+ 
+Bom, os passos sao os seguintes:
+ 
+Como root, digite:
+ 
+dd if=/dev/zero of=/swap bs=1024 count=64000000
+ 
+(esse comando vai criar um arquivo no seu diretorio root, chamado swap 
+(of=/swap) com o tamanho de 64MB (count=64000000).
+ 
+Agora vc precisa gerar o sistema de arquivos swap, digite:
+ 
+mkswap /swap
+ 
+E finalmente para ativa-lo, digite:
+ 
+swapon /swap
+ 
+Acho que vc vai kerer q ele seja inicializado automaticamente toda vez, 
+entao acrescente a seguinte linha no seu arquivo /etc/fstab:
+ 
+/swap swap swap defaults 0 0
+ 
+Fonte: http://www.zago.eti.br/swap.txt

@@ -1,0 +1,29 @@
+SELECT CF.EF_NUM, CF.CF_NUM_SEQ, cf_num_cupom, cf_dat_venda, CF.CF_VAL_TOTAL_CUPOM + CF_VAL_DESC CF_VAL_TOTAL_CUPOM, 
+       (select SUM(ROUND(ITCF.ITCF_VAL_PRVDA * ITCF.ITCF_QTD,2))
+        FROM ITEM_CUPOM_FISCAL ITCF
+        WHERE ITCF.EM_COD = CF.EM_COD
+          AND ITCF.FI_COD = CF.FI_COD
+          AND ITCF.EF_NUM = CF.EF_NUM
+          AND ITCF.CF_NUM_SEQ = CF.CF_NUM_SEQ
+          AND ITCF.ITCF_FLG_CANCDO = 'N') TOTAL_VENDA_ITEM,
+       (CF.CF_VAL_TOTAL_CUPOM + CF_VAL_DESC - (select SUM(ROUND(ITCF.ITCF_VAL_PRVDA * ITCF.ITCF_QTD,2))
+                                 FROM ITEM_CUPOM_FISCAL ITCF
+                                 WHERE ITCF.EM_COD = CF.EM_COD
+                                   AND ITCF.FI_COD = CF.FI_COD
+                                   AND ITCF.EF_NUM = CF.EF_NUM
+                                   AND ITCF.CF_NUM_SEQ = CF.CF_NUM_SEQ
+                                   AND ITCF.ITCF_FLG_CANCDO = 'N')) DIFERENCA
+FROM CUPOM_FISCAL CF
+WHERE CF.EM_COD = 1
+  AND CF.FI_COD = &FI_COD
+  AND TRUNC(CF.CF_DAT_VENDA) = '&CF_DAT_VENDA'
+  AND CF.CF_FLG_FINALC = 'S'
+  AND CF.CF_FLG_CANCDO = 'N'  
+  AND CF.EF_NUM = &EF_NUM
+  and (CF.CF_VAL_TOTAL_CUPOM + CF_VAL_DESC <> (select SUM(ROUND(ITCF.ITCF_VAL_PRVDA * ITCF.ITCF_QTD,2))
+                                 FROM ITEM_CUPOM_FISCAL ITCF
+                                 WHERE ITCF.EM_COD = CF.EM_COD
+                                   AND ITCF.FI_COD = CF.FI_COD
+                                   AND ITCF.EF_NUM = CF.EF_NUM
+                                   AND ITCF.CF_NUM_SEQ = CF.CF_NUM_SEQ
+                                   AND ITCF.ITCF_FLG_CANCDO = 'N'))

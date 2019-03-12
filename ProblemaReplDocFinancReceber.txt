@@ -1,0 +1,31 @@
+-- Problema que aconteceu no CR:
+-- O documento foi inserido no CR. Replicou para loja. Antes de voltar o registro
+-- o usuario deletou o registro, com isso, quando a replicacao veio e viu que nao
+-- tinha o registro, inseriu novamente.
+
+SELECT DF.EN_COD, DF.DF_DAT_EMIS, DF.DF_VAL_DOCTO,DF.FI_COD, DF.DF_NUM_SEQ
+FROM DOC_FINANC DF
+WHERE DF_FLG_TIP_LANC = 'R'
+	AND EXISTS (SELECT DF2.DF_NUM_SEQ 
+	              FROM DOC_FINANC_log DF2
+	              WHERE DF2.EM_COD = DF.EM_COD
+		                  AND DF2.FI_COD = DF.FI_COD
+                      AND DF2.DF_NUM_SEQ = DF.DF_NUM_SEQ                      
+		                  AND trunc(DF2.df_dat_exec) = DF.DF_DAT_entrad
+                      and df2.df_flg_comand_exec = 'I')
+	AND EXISTS (SELECT DF2.DF_NUM_SEQ 
+	              FROM DOC_FINANC_log DF2
+	              WHERE DF2.EM_COD = DF.EM_COD
+		                  AND DF2.FI_COD = DF.FI_COD
+                      AND DF2.DF_NUM_SEQ = DF.DF_NUM_SEQ                      
+		                  AND trunc(DF2.df_dat_exec) = DF.DF_DAT_entrad
+                      and df2.df_flg_comand_exec = 'D')
+AND EXISTS (SELECT DF2.DF_NUM_SEQ 
+	              FROM DOC_FINANC_log DF2
+	              WHERE DF2.EM_COD = DF.EM_COD
+		                  AND DF2.FI_COD = DF.FI_COD
+                      AND DF2.DF_NUM_SEQ = DF.DF_NUM_SEQ                      
+		                  AND df2.DF_NOM_USER = 'GONDOLA'
+                      and df2.DF_NOM_TERM = 'REPLICACAO'
+                      and df2.df_flg_comand_exec = 'I')
+ORDER BY DF.DF_NUM_SEQ desc, DF.EN_COD, DF.DF_DAT_EMIS, DF.DF_VAL_DOCTO,DF.FI_COD

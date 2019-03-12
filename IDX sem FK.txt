@@ -1,0 +1,11 @@
+select i.uniqueness, substr(i.index_name,1,30) index_name, i.table_name
+from all_indexes i
+where i.owner = User
+  and i.table_owner = user
+  and i.index_name like '%FK%'
+  and not exists (select 1
+                  from user_constraints c
+                  where c.owner = Upper(User)
+                    and c.constraint_name = substr(i.index_name,1,length(i.index_name) - 2)
+                    and c.constraint_type <> 'C')
+order by i.index_name;
