@@ -1,9 +1,0 @@
-select name, type, line, trim(text)
-from all_source
-where owner = 'AMCOM'
-minus
-select name, type, line, trim(text)
-from all_source@cr
-where owner = 'GONDOLA'
-
-O problema eh que mesmo com o trim() o oracle retornou espacos no final de algumas linhas.
