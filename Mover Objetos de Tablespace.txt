@@ -1,7 +1,0 @@
-alter table contrl_venda_cred move tablespace gondola_gd; 
-
-alter index ENCD_PK rebuild tablespace gondola_pi;
-
-
--- Acha os objetos LOB q tem dentro da tablespace
-SELECT OWNER,TABLE_NAME,INDEX_NAME FROM DBA_INDEXES WHERE TABLESPACE_NAME ='AM_DADOS';
